@@ -199,6 +199,20 @@ def flipdiagonalHelperY():
     if diagonalHelperY=8:
         flipHelperY=1
 
+def diagonalmover():
+    diagonalhelp()
+    flipdiagonalhelper()
+    currentpostionhelper()
+    if (diagonalhelperX+diagonalHelperY)==(currentpositionDiagonalHelperX+ currentpositionDiagonalHelperY) :
+         movepiece()
+        break
+    elif (flipdiagonalHelperX+flipdiagonalHelperY)==(currentpositionDiagonalHelperX+ currentpositionDiagonalHelperY):
+        movepiece()
+        break
+    else:
+        print("illegal move")
+        piecemoveinput=input("Pick a move to a legal postion ")
+        diagonalmover()
 
 movenumber=0
 while movenumber<50:
@@ -218,7 +232,20 @@ for event in pygame.event.get():
     if event.type==QUIT:
         pygame.quit()
         sys.exit()
-
+def diagonalmover():
+    diagonalhelp()
+    flipdiagonalhelper()
+    currentpostionhelper()
+    if (diagonalhelperX+diagonalHelperY)==(currentpositionDiagonalHelperX+ currentpositionDiagonalHelperY) :
+         movepiece()
+        break
+    elif (flipdiagonalHelperX+flipdiagonalHelperY)==(currentpositionDiagonalHelperX+ currentpositionDiagonalHelperY):
+        movepiece()
+        break
+    else:
+        print("illegal move")
+        piecemoveinput=input("Pick a move to a legal postion ")
+        diagonalmover()
 
 class Moves():
     def __init__(self, moves1,moves2):
@@ -234,16 +261,5 @@ class Moves():
                     print("Illegal move")
                     piecemoveinput=input("Pick a move to a legal postion ")
         if self.moves1== "diagonal":
-            while True:
-                diagonalhelp()
-                flipdiagonalhelper()
-                currentpostionhelper()
-                if (diagonalhelperX+diagonalHelperY)==currentpositionDiagonalHelperX+ currentpositionDiagonalHelperY :
-                    movepiece()
-                    break
-                if flipdiagonalHelperX+flipdiagonalHelperY==currentpositionDiagonalHelperX+ currentpositionDiagonalHelperY:
-                    movepiece()
-                    break
-                else:
-                    print("illegal move")
-                    piecemoveinput=input("Pick a move to a legal postion ")
+            diagonalmover()
+        moveOption()
