@@ -47,38 +47,43 @@ while count1<32:
     board_x-=80
     board_y+=80
     pygame.draw.rect(screen,black,(board_x,board_y,80,80))
+#piece of code i took from https://stackoverflow.com/questions/19780411/pygame-drawing-a-rectangle
+#checks and updates the screen so that things actually show up in pygame
+while True:
+    for event in pygame.event.get():
+        if event.type==QUIT:
+            pygame.quit()
+            sys.exit()
     pygame.display.update()
-    
 
 
-#funtctions to change an input of chess formula(ex. a1,b6, c4, etc) into positional coordinates on the board
-global xposition
-global yposition
+
+
 global piecemoveinput
-piecemoveinput=""
+
 
 
 #creating a class to try to be able to move a piece
-class ChessPiece():
-    def __init__(self, whatever):
-        self.whatever =whatever
-    def piecemove(self):
-        global xposition
-        global yposition
-        while True:
-            piecemoveinput=input("Where do you want to  move the piece ")
-            piecexpos()
-            pieceypos()
-            pygame.draw.rect(screen,white,(xposition,yposition,10,10))
-            if piecemoveinput[0]=="q" or piecemoveinput[0]=="Q":
-               break
+# gving up on this for now, using function instead
+# class ChessPiece():
+#     def __init__(self, whatever):
+#         self.whatever =whatever
+#     def piecemove(self):
+#         global xposition
+#         global yposition
+#         while True:
+#             piecemoveinput=input("Where do you want to  move the piece ")
+#             piecexpos()
+#             pieceypos()
+#             pygame.draw.rect(screen,white,(xposition,yposition,10,10))
+#             if piecemoveinput[0]=="q" or piecemoveinput[0]=="Q":
+#                break
 #function to try to move a piece
 #keep failing out of pygame though, maybe because processor, but i am not sure
 def movepiece():
     while True:
-        piecemoveinput=input("where do you want to move the piece ")
-        xpositon=0
-        yposition=0
+        global xposition
+        global yposition
         piecexpos()
         pieceypos()
         pygame.draw.rect(screen,white,(xposition,yposition,10,10))
@@ -89,7 +94,7 @@ def piecexpos():
     
     if piecemoveinput[0]=="a":
         xposition=40
-        print(xposition)
+        #print(xposition)
     if piecemoveinput[0]=="b":
         xposition=120
     elif piecemoveinput[0]=="c":
@@ -108,7 +113,7 @@ def piecexpos():
 def pieceypos():
     if piecemoveinput[1]=="8":
         yposition=40
-        print(xposition)
+       # print(xposition)
     if piecemoveinput[1]=="7":
         yposition=120
     elif piecemoveinput[1]=="6":
@@ -123,10 +128,18 @@ def pieceypos():
         yposition=520
     elif piecemoveinput[1]=="1":
         yposition=600
+
+
 #changing a-h to 1-8 so i can use some math to be able to tell whether it is diagonal or not
-diagonalHelperX=0
-diagonalHelperY=0
-def currentpostionhelper():
+global piecemoveinput
+global currentpositon
+currentposition="a1"
+piecemoveinput=input("move piece ")
+#changes chess formula to numbers i can use
+def currentpositionhelper():
+   # print("current position helper")
+    global currentpositionDiagonalHelperY
+    global currentpositionDiagonalHelperX
     currentpositionDiagonalHelperY= int(currentposition[1])
     if currentposition[0]== "a":
         currentpositionDiagonalHelperX=1
@@ -144,7 +157,11 @@ def currentpostionhelper():
         currentpositionDiagonalHelperX=7
     elif currentposition[0]== "h":
         currentpositionDiagonalHelperX=8
+#changes your input in chess formula to numbers
 def diagonalhelp():
+   # print("diagonal help")
+    global diagonalHelperX
+    global diagonalHelperY
     diagonalHelperY= int(piecemoveinput[1])
     if piecemoveinput[0]== "a":
         diagonalHelperX=1
@@ -164,102 +181,102 @@ def diagonalhelp():
         diagonalHelperX=8
     else:
         print("what are you doing!?!?!?!")
+#flips the numbering on the x side in order to leverage a method of 
+# checking if diagonal moves are legal. More on that later.
 def flipdiagonalHelperX():
-    if diagonalHelperX=1:
+   # print("flipdiagonalhelperX")
+    global flipHelperX
+    if diagonalHelperX==1:
         flipHelperX=8
-    if diagonalHelperX=2:
+    if diagonalHelperX==2:
         flipHelperX=7
-    if diagonalHelperX=3:
+    if diagonalHelperX==3:
         flipHelperX=6
-    if diagonalHelperX=4:
+    if diagonalHelperX==4:
         flipHelperX=5
-    if diagonalHelperX=5:
+    if diagonalHelperX==5:
         flipHelperX=4
-    if diagonalHelperX=6:
+    if diagonalHelperX==6:
         flipHelperX=3
-    if diagonalHelperX=7:
+    if diagonalHelperX==7:
         flipHelperX=2
-    if diagonalHelperX=8:
+    if diagonalHelperX==8:
         flipHelperX=1
-def flipdiagonalHelperY():
-    if diagonalHelperY=1:
-        flipHelperY=8
-    if diagonalHelperY=2:
-        flipHelperY=7
-    if diagonalHelperY=3:
-        flipHelperY=6
-    if diagonalHelperY=4:
-        flipHelperY=5
-    if diagonalHelperY=5:
-        flipHelperY=4
-    if diagonalHelperY=6:
-        flipHelperY=3
-    if diagonalHelperY=7:
-        flipHelperY=2
-    if diagonalHelperY=8:
-        flipHelperY=1
-
+#same thing as above, but for current position
+def currentPositionFlipper():
+   # print("currentpositionflipper")
+    global currentpositionflipHelperX
+    if currentpositionDiagonalHelperX==1:
+        currentpositionflipHelperX=8
+    if currentpositionDiagonalHelperX==2:
+        currentpositionflipHelperX=7
+    if currentpositionDiagonalHelperX==3:
+        currentpositionflipHelperX=6
+    if currentpositionDiagonalHelperX==4:
+        currentpositionflipHelperX=5
+    if currentpositionDiagonalHelperX==5:
+        currentpositionflipHelperX=4
+    if currentpositionDiagonalHelperX==6:
+        currentpositionflipHelperX=3
+    if currentpositionDiagonalHelperX==7:
+        currentpositionflipHelperX=2
+    if currentpositionDiagonalHelperX==8:
+        currentpositionflipHelperX=1
+#putting all of the functions above in one thing
 def diagonalmover():
+    global piecemoveinput
+    global currentposition
+    currentpositionhelper()
     diagonalhelp()
-    flipdiagonalhelper()
-    currentpostionhelper()
-    if (diagonalhelperX+diagonalHelperY)==(currentpositionDiagonalHelperX+ currentpositionDiagonalHelperY) :
-         movepiece()
-        break
-    elif (flipdiagonalHelperX+flipdiagonalHelperY)==(currentpositionDiagonalHelperX+ currentpositionDiagonalHelperY):
-        movepiece()
-        break
-    else:
-        print("illegal move")
-        piecemoveinput=input("Pick a move to a legal postion ")
-        diagonalmover()
+    flipdiagonalHelperX()
+    currentPositionFlipper()
+   # print (piecemoveinput)
+   # print(currentposition)
 
-movenumber=0
-while movenumber<50:
-    piecemoveinput=input("Where do you want to  move the piece ")
-    xposition=0
-    yposition=0
-    piecexpos()
-    pieceypos()
-    pygame.draw.rect(screen,black,(xposition,yposition,10,10))
-    pygame.display.update()
-    movenumber+=1
-    if piecemoveinput[0]=="q" or piecemoveinput[0]=="Q":
-        break
-#piece of code i took from https://stackoverflow.com/questions/19780411/pygame-drawing-a-rectangle
-#checks and updates the screen so that things actually show up in pygame
-for event in pygame.event.get():
-    if event.type==QUIT:
-        pygame.quit()
-        sys.exit()
-def diagonalmover():
-    diagonalhelp()
-    flipdiagonalhelper()
-    currentpostionhelper()
-    if (diagonalhelperX+diagonalHelperY)==(currentpositionDiagonalHelperX+ currentpositionDiagonalHelperY) :
-         movepiece()
-        break
-    elif (flipdiagonalHelperX+flipdiagonalHelperY)==(currentpositionDiagonalHelperX+ currentpositionDiagonalHelperY):
+#leveraging the fact that if you add the x y coordinates you get one number diagonally from there
+    if (diagonalHelperX+diagonalHelperY)==(currentpositionDiagonalHelperY +currentpositionDiagonalHelperX) :
         movepiece()
-        break
+        #print(diagonalHelperX+diagonalHelperY)
+        #print(currentpositionDiagonalHelperY +currentpositionDiagonalHelperX)
+        currentposition=piecemoveinput
+        piecemoveinput=input("Pick a move1 ")
+#flipping it to check the other diagonal
+    elif (diagonalHelperX+diagonalHelperY)!=(currentpositionDiagonalHelperY +currentpositionDiagonalHelperX) and (flipHelperX+ diagonalHelperY)==(currentpositionflipHelperX+ currentpositionDiagonalHelperY):
+        movepiece()
+        #print(flipHelperX+ diagonalHelperY)
+        #print(currentpositionflipHelperX+ currentpositionDiagonalHelperY)
+        currentposition=piecemoveinput
+        piecemoveinput=input("Pick a move2 ")
+        
+#if nothing works resets
     else:
+        # print(flipHelperX+ diagonalHelperY)
+        # print(currentpositionflipHelperX+ currentpositionDiagonalHelperY)
+        # print(diagonalHelperX+diagonalHelperY)
+        # print(currentpositionDiagonalHelperY +currentpositionDiagonalHelperX)
         print("illegal move")
-        piecemoveinput=input("Pick a move to a legal postion ")
-        diagonalmover()
+        piecemoveinput=input("Pick a move to a legal postion1 ")
+    diagonalmover()
 
+#class with the move options
 class Moves():
     def __init__(self, moves1,moves2):
         self.moves1=moves1
         self.moves2=moves2
-    def moveOption():
+    def moveOption(self):
         if self.moves1== "straight":
+            global piecemoveinput
             while True:
+#straight moves just check to see if the formula matches with one piece of current position
                 if currentposition[0]==piecemoveinput[0] or  currentposition[1]==piecemoveinput[1]:
                     movepiece()
                     break
                 else:
                     print("Illegal move")
                     piecemoveinput=input("Pick a move to a legal postion ")
-        if self.moves1== "diagonal":
+        if self.moves2== "diagonal":
             diagonalmover()
-        moveOption()
+        currentposition = piecemoveinput
+        piecemoveinput=input("move piece")
+        self.moveOption()
+

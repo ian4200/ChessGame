@@ -4,6 +4,7 @@ def movepiece():
     print("piece moved")
 
 def currentpositionhelper():
+    print("current position helper")
     global currentpositionDiagonalHelperY
     global currentpositionDiagonalHelperX
     currentpositionDiagonalHelperY= int(currentposition[1])
@@ -24,6 +25,7 @@ def currentpositionhelper():
     elif currentposition[0]== "h":
         currentpositionDiagonalHelperX=8
 def diagonalhelp():
+    print("diagonal help")
     global diagonalHelperX
     global diagonalHelperY
     diagonalHelperY= int(piecemoveinput[1])
@@ -46,6 +48,7 @@ def diagonalhelp():
     else:
         print("what are you doing!?!?!?!")
 def flipdiagonalHelperX():
+    print("flipdiagonalhelperX")
     global flipHelperX
     if diagonalHelperX==1:
         flipHelperX=8
@@ -64,6 +67,7 @@ def flipdiagonalHelperX():
     if diagonalHelperX==8:
         flipHelperX=1
 def currentPositionFlipper():
+    print("currentpositionflipper")
     global currentpositionflipHelperX
     if currentpositionDiagonalHelperX==1:
         currentpositionflipHelperX=8
@@ -83,24 +87,29 @@ def currentPositionFlipper():
         currentpositionflipHelperX=1
 
 def diagonalmover():
-    
+    global piecemoveinput
+    global currentposition
     currentpositionhelper()
     diagonalhelp()
     flipdiagonalHelperX()
     currentPositionFlipper()
-    
+    print (piecemoveinput)
+    print(currentposition)
     if (diagonalHelperX+diagonalHelperY)==(currentpositionDiagonalHelperY +currentpositionDiagonalHelperX) :
         movepiece()
         print(diagonalHelperX+diagonalHelperY)
         print(currentpositionDiagonalHelperY +currentpositionDiagonalHelperX)
+        currentposition=piecemoveinput
         piecemoveinput=input("Pick a move1 ")
-        #break
+        
+        
     elif (diagonalHelperX+diagonalHelperY)!=(currentpositionDiagonalHelperY +currentpositionDiagonalHelperX) and (flipHelperX+ diagonalHelperY)==(currentpositionflipHelperX+ currentpositionDiagonalHelperY):
         movepiece()
         print(flipHelperX+ diagonalHelperY)
         print(currentpositionflipHelperX+ currentpositionDiagonalHelperY)
+        currentposition=piecemoveinput
         piecemoveinput=input("Pick a move2 ")
-        #break
+        
     
     else:
         print(flipHelperX+ diagonalHelperY)
