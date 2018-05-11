@@ -15,12 +15,15 @@ from pygame import *
 from time import sleep
 pygame.init 
 
+#image stuff https://pixabay.com/en/chess-queen-meeple-crown-black-36311/
+whitequeen=pygame.image.load("finalProject/images/whitequeen.png")
+blackqueen=pygame.image.load("finalProject/images/blackqueen.png")
 #image calling
 #wQimage= pygame.image.load("whitequeen.png")
 #advice on rectangles from here https://stackoverflow.com/questions/19780411/pygame-drawing-a-rectangle
 
 white=(255,255,255)
-black=(0,0,0)
+black=(50,50,50)
 screen=pygame.display.set_mode((640,640)) 
 screen.fill(white)
 board_x=0
@@ -51,8 +54,7 @@ while count1<32:
     pygame.draw.rect(screen,black,(board_x,board_y,80,80))
 pygame.display.update()
 
-
-    # sleep(4)
+# sleep(4)
 #piece of code i took from https://stackoverflow.com/questions/19780411/pygame-drawing-a-rectangle
 #checks and updates the screen so that things actually show up in pygame
 # while True:
@@ -61,13 +63,6 @@ pygame.display.update()
 #             pygame.quit()
 #             sys.exit()
 #         pygame.display.update()
-
-
-
-
-global piecemoveinput
-
-
 
 #creating a class to try to be able to move a piece
 # gving up on this for now, using function instead
@@ -86,60 +81,108 @@ global piecemoveinput
 #                break
 #function to try to move a piece
 #keep failing out of pygame though, maybe because processor, but i am not sure
+player=1
+pastmoves=[""]
+listposition=0
 def movepiece():
     global xposition
     global yposition
+    global player
+    global currentposition
+    global piecemoveinput
+    global listposition
+    global pastmoves
+    #erasePiece()
     piecexpos()
     pieceypos()
-    pygame.draw.rect(screen,white,(xposition,yposition,10,10))
+    if player==1:
+        screen.blit(whitequeen,(xposition,yposition))
+        player+=1
+        currentposition = piecemoveinput
+        pastmoves+=[currentposition]
+        listposition+=1
+        print(pastmoves)
+        #currentposition1=currentposition
+        #erasePiece()
+    elif player==2:
+        screen.blit(blackqueen,(xposition,yposition))
+        player-=1
+        currentposition = piecemoveinput
+        pastmoves+=[currentposition]
+        listposition+=1
+        print(pastmoves)
+        #currentposition2=currentposition
+        #erasePiece()
     pygame.display.update()
+    
+def erasePiece():
+    global piecemoveinput
+    global currentposition
+    global listposition
+    global pastmoves
+
+    pieceEraser = piecemoveinput
+    piecemoveinput=pastmoves[(listposition-2)]
+    if listposition==1 or listposition==2:
+        pass
+    else:
+        piecexpos()
+        pieceypos()
+        diagonalhelp()
+        if  (diagonalHelperX+diagonalHelperY)%2==1 :
+            pygame.draw.rect(screen,black,(xposition,yposition,80,80))
+            pygame.display.update()
+        else:
+            pygame.draw.rect(screen,white,(xposition,yposition,80,80)) 
+            pygame.display.update()
+        #piecemoveinput=pieceEraser
+
 #getting x position on the chessboard from a user input of chess formula
 def piecexpos():
     global xposition
 
     if piecemoveinput[0]=="a":
-        xposition=40
+        xposition=0
         #print(xposition)
     if piecemoveinput[0]=="b":
-        xposition=120
+        xposition=80
     elif piecemoveinput[0]=="c":
-        xposition=200
+        xposition=160
     elif piecemoveinput[0]=="d":
-        xposition=280
+        xposition=240
     elif piecemoveinput[0]=="e":
-        xposition=360
+        xposition=320
     elif piecemoveinput[0]=="f":
-        xposition=440 
+        xposition=400 
     elif piecemoveinput[0]=="g":
-        xposition=520
+        xposition=480
     elif piecemoveinput[0]=="h":
-        xposition=600
+        xposition=560
 #getting y position on the chessboard from a user input of chess formula
 def pieceypos():
     global yposition
     if piecemoveinput[1]=="8":
-        yposition=40
+        yposition=0
        # print(xposition)
     if piecemoveinput[1]=="7":
-        yposition=120
+        yposition=80
     elif piecemoveinput[1]=="6":
-        yposition=200
+        yposition=160
     elif piecemoveinput[1]=="5":
-        yposition=280
+        yposition=240
     elif piecemoveinput[1]=="4":
-        yposition=360
+        yposition=320
     elif piecemoveinput[1]=="3":
-        yposition=440 
+        yposition=400 
     elif piecemoveinput[1]=="2":
-        yposition=520
+        yposition=480
     elif piecemoveinput[1]=="1":
-        yposition=600
-
+        yposition=560
 
 #changing a-h to 1-8 so i can use some math to be able to tell whether it is diagonal or not
 global piecemoveinput
 global currentpositon
-currentposition="a1"
+curretnposition=""
 
 #changes chess formula to numbers i can use
 def currentpositionhelper():
@@ -232,26 +275,39 @@ def currentPositionFlipper():
 
 #one giant class that lets me create pieces that can move around the board straight or diagonally
 class Moves():
-    def __init__(self, moves1,moves2):
+    def __init__(self, moves1,moves2, startPosition):
+        global currentposition
         self.moves1=moves1
         self.moves2=moves2
+        self.startPosition=startPosition
+        currentposition=self.startPosition
     def moveOption(self):
         global currentposition
         global piecemoveinput
         #piecemoveinput=input("move piece")
+        #print(listposition)
+        #this uses the pastmoves list toget the position of the piece that didn't just move
+        #doesn't effect the first 2 times though
+        if listposition!=1 and listposition!=2 and listposition!=0:
+            currentposition=pastmoves[listposition-1]
+            #print(currentposition)
+#if the moves are straight it goes through this conditional
         if self.moves1== "straight":
-
+            #erasePiece()
 #straight moves just check to see if the formula matches with one piece of current position
             if currentposition[0]==piecemoveinput[0] or  currentposition[1]==piecemoveinput[1]:
                 movepiece()
-                
-            
+                erasePiece()
+        #if the piece can move both straight and diagonal it goes though here
+            elif self.moves2== "diagonal":
+                self.diagonalmover()
             else:
                 print("Illegal move")
                 self.playGame()
+#if it is a bishop and can only move diagonal it goes though here
         elif self.moves2== "diagonal":
             self.diagonalmover()
-        currentposition = piecemoveinput
+        
     #putting all of the functions above in one thing
     def diagonalmover(self):
         global piecemoveinput
@@ -262,21 +318,20 @@ class Moves():
         currentPositionFlipper()
     # print (piecemoveinput)
     # print(currentposition)
-
+        #erasePiece()
     #leveraging the fact that if you add the x y coordinates you get one number diagonally from there
         if (diagonalHelperX+diagonalHelperY)==(currentpositionDiagonalHelperY +currentpositionDiagonalHelperX) :
             movepiece()
             #print(diagonalHelperX+diagonalHelperY)
             #print(currentpositionDiagonalHelperY +currentpositionDiagonalHelperX)
-            currentposition=piecemoveinput
-            self.playGame()
+            erasePiece()
+        
     #flipping it to check the other diagonal
         elif (diagonalHelperX+diagonalHelperY)!=(currentpositionDiagonalHelperY +currentpositionDiagonalHelperX) and (flipHelperX+ diagonalHelperY)==(currentpositionflipHelperX+ currentpositionDiagonalHelperY):
             movepiece()
             #print(flipHelperX+ diagonalHelperY)
             #print(currentpositionflipHelperX+ currentpositionDiagonalHelperY)
-            currentposition=piecemoveinput
-            self.playGame()
+            erasePiece()
             
     #if nothing works resets
         else:
@@ -288,6 +343,8 @@ class Moves():
             self.playGame() 
     def playGame(self):
         global piecemoveinput
+        global player
+        
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_a:
@@ -333,6 +390,9 @@ class Moves():
             if event.type==QUIT:
                 pygame.quit()
                 sys.exit()
+            
+   
+            
 
 
 # while True:
@@ -350,8 +410,8 @@ class Moves():
 #             elif event.key == pygame.K_b:
 #                 piecemoveinput="b"
 
-pawn=Moves("","diagonal")
-
+pawn=Moves("","diagonal", "a2")
+rook=Moves("straight", "diagonal", "a1")
 while True:
-    pawn.playGame()
-
+    rook.playGame()
+    
