@@ -13,46 +13,17 @@ import pygame, sys
 from pygame.locals import *
 from pygame import *
 from time import sleep
+from chessboard import drawBoard
 pygame.init 
 
 #image stuff https://pixabay.com/en/chess-queen-meeple-crown-black-36311/
 whitequeen=pygame.image.load("finalProject/images/whitequeen.png")
 blackqueen=pygame.image.load("finalProject/images/blackqueen.png")
 #image calling
-#wQimage= pygame.image.load("whitequeen.png")
-#advice on rectangles from here https://stackoverflow.com/questions/19780411/pygame-drawing-a-rectangle
 
 white=(255,255,255)
 black=(50,50,50)
-screen=pygame.display.set_mode((640,640)) 
-screen.fill(white)
-board_x=0
-board_y=0
-count1=0
-#moves around creating black squares on a white background
-#making a board
-
-while count1<32:    
-    count2 = 0
-    count3= 0
-    while count2<4:
-        pygame.draw.rect(screen,black,(board_x,board_y,80,80))
-        board_x+=160
-        count1+=1
-        count2+=1
-    board_x+=80
-    board_y+=80
-    pygame.draw.rect(screen,black,(board_x,board_y,80,80))
-    while count3<4:
-        board_x-=160
-        pygame.draw.rect(screen,black,(board_x,board_y,80,80))
-        
-        count1+=1
-        count3+=1
-    board_x-=80
-    board_y+=80
-    pygame.draw.rect(screen,black,(board_x,board_y,80,80))
-pygame.display.update()
+drawBoard()
 
 # sleep(4)
 #piece of code i took from https://stackoverflow.com/questions/19780411/pygame-drawing-a-rectangle
