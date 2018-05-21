@@ -6,15 +6,23 @@ then adding up the rows and columns
 this leads to a square that looks like this
 
 
- 1  2  3  4  5  6  7  8
-1 2  3  4  5  6  7  8  9
-2 3  4  5  6  7  8  9  10
-3 4  5  6  7  8  9  10 11
-4 5  6  7  8  9  10 11 12
-5 6  7  8  9  10 11 12 13
-6 7  8  9  10 11 12 13 14
-7 8  9  10 11 12 13 14 15
-8 9  10 11 12 13 14 15 16
+__1__2__3__4__5__6__7__8
+ 
+1_2__3__4__5__6__7__8__9
+
+2_3__4__5__6__7__8__9__10
+
+3_4__5__6__7__8__9__10_11
+
+4_5__6__7__8__9__10_11_12
+
+5_6__7__8__9__10_11_12_13
+
+6_7__8__9__10_11_12_13_14
+
+7_8__9__10_11_12_13_14_15
+
+8_9__10_11_12_13_14_15_16
 
 as you can see all the diagonals going one direction add to the same number
 then i just made a method that checked whether the current position of the piece added to the same number 
